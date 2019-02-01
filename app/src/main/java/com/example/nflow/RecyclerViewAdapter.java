@@ -1,6 +1,8 @@
 package com.example.nflow;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -36,6 +38,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG,"onBind: Called");
+        final Bundle b = new Bundle();
 
         holder.tvName.setText(infoList.get(position).name);
         holder.tvScore.setText(infoList.get(position).score + "%");
@@ -45,7 +48,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View view){
                 Log.d(TAG,"Clicked: " + infoList.get(position));
-                Toast.makeText(mContext,infoList.get(position).name +" "+ infoList.get(position).score + infoList.get(position).date ,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext,infoList.get(position).name +" "+ infoList.get(position).score + infoList.get(position).date ,Toast.LENGTH_SHORT).show();
+                b.putString("name",infoList.get(position).name);
+                b.putString("date",infoList.get(position).date);
+                b.putString("score",infoList.get(position).score);
+
+                Context context = view.getContext();
+                Intent intent = new Intent(context, ScoreScreenActivity.class);
+                intent.putExtras(b);
+                context.startActivity(intent);
             }
         });
 
@@ -65,6 +76,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             tvName = itemView.findViewById(R.id.Name);
             tvScore = itemView.findViewById(R.id.Score);
             tvDate = itemView.findViewById(R.id.Date);
@@ -72,4 +84,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         }
     }
+
+
 }
